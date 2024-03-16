@@ -5,6 +5,8 @@
 #include <fstream>
 #include <string>
 
+using namespace std;
+
 int writeFile();
 int readFile();
 
