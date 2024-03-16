@@ -1,9 +1,3 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include "main.hpp"
-
-using namespace std;
 
 #include <iostream>
 #include <fstream>
