@@ -5,70 +5,70 @@
 
 using namespace std;
 
-// Function to write employee information to file
-int writeFile(const string& filename) {
+int writeFile() {
+    ofstream ofs("employee.txt");
+    if (!ofs.is_open()) {
+        cerr << "Error opening file." << endl;
+        return -1;
+    }
+
     int numEmployees;
     cout << "Enter the number of employees: ";
     cin >> numEmployees;
-    cin.ignore(); // Ignore the newline character in the input buffer
+    ofs << numEmployees << endl;
 
-    ofstream file(filename);
-    if (!file.is_open()) {
-        cerr << "Unable to open file." << endl;
-        return -1;
-    }
-
-for (int i = 0; i < numEmployees; ++i) {
-        int id;
-        string name, department;
+    for (int i = 0; i < numEmployees; ++i) {
+        int employeeID;
+        string employeeName, departmentName;
         double salary;
 
-        cout << "Enter employee ID, name, department, and salary (separated by spaces): ";
-        cin >> id >> name >> department >> salary;
-        cin.ignore(); // Ignore the newline character in the input buffer
+        cout << "Enter the Employee ID, Name, Department, and Salary for employee " << (i + 1) << ": ";
+        cin >> employeeID >> employeeName >> departmentName >> salary;
 
-        file << id << " " << name << " " << department << " " << salary << endl;
+        ofs << employeeID << " " << employeeName << " " << departmentName << " " << salary << endl;
     }
 
-    file.close();
+    ofs.close();
     return numEmployees;
 }
 
-// Function to read and print employee information from file
-int readFile(const string& filename) {
-    ifstream file(filename);
-    if (!file.is_open()) {
-        cerr << "Unable to open file." << endl;
+int readFile() {
+    ifstream ifs("employee.txt");
+    if (!ifs.is_open()) {
+        cerr << "Error opening file." << endl;
         return -1;
     }
 
-    int numEmployees = 0;
-    int id;
-    string name, department;
-    double salary;
+    int numEmployees;
+    ifs >> numEmployees;
+    cout << "Number of employees: " << numEmployees << endl;
 
-    cout << "Employee information in file:" << endl;
-    while (file >> id >> name >> department >> salary) {
-        cout << id << " " << name << " " << department << " " << salary << endl;
-        ++numEmployees;
+    for (int i = 0; i < numEmployees; ++i) {
+        int employeeID;
+        string employeeName, departmentName;
+        double salary;
+
+        ifs >> employeeID >> employeeName >> departmentName >> salary;
+        cout << employeeID << " " << employeeName << " " << departmentName << " " << salary << endl;
     }
 
-    file.close();
+    ifs.close();
     return numEmployees;
 }
 
-int main()
-{
-
-    string filename;
-    int empN;
-
-    filename = "employee.txt";
-    empN = writeFile(filename);
-    cout << "File created with " << empN << " employee records\n";
-
-    empN = readFile(filename);
-    cout << "The total number of employess read " << empN << endl;
+int main() {
+    int numEmployeesWritten = writeFile();
+    if (numEmployeesWritten > 0) {
+        cout << "Employee information has been written to employee.txt." << endl;
+        int numEmployeesRead = readFile();
+        if (numEmployeesRead > 0) {
+            cout << "Total number of employees read: " << numEmployeesRead << endl;
+        } else {
+            cerr << "Error reading employee information from file." << endl;
+        }
+    } else {
+        cerr << "Error writing employee information to file." << endl;
+    }
 
     return 0;
 }
